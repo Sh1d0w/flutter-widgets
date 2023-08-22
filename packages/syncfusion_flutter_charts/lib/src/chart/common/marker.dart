@@ -447,8 +447,10 @@ class MarkerSettingsRenderer {
           seriesRendererDetails.renderer);
       if (series.markerSettings.shape == DataMarkerType.image) {
         drawImageMarker(
+            series,
             seriesRendererDetails,
             canvas,
+            point.overallDataPointIndex,
             isBoxSeries
                 ? point.outliersPoint[outlierIndex!].x
                 : point.markerPoint!.x,
@@ -457,7 +459,12 @@ class MarkerSettingsRenderer {
                 : point.markerPoint!.y);
         if (seriesRendererDetails.seriesType.contains('range') == true ||
             seriesRendererDetails.seriesType == 'hilo') {
-          drawImageMarker(seriesRendererDetails, canvas, point.markerPoint2!.x,
+          drawImageMarker(
+              series,
+              seriesRendererDetails,
+              canvas,
+              point.overallDataPointIndex,
+              point.markerPoint2!.x,
               point.markerPoint2!.y);
         }
       }
@@ -581,9 +588,21 @@ class MarkerSettingsRenderer {
   }
 
   /// Paint the image marker.
-  void drawImageMarker(SeriesRendererDetails seriesRendererDetails,
-      Canvas canvas, double pointX, double pointY) {
-    if (seriesRendererDetails.markerSettingsRenderer!.image != null) {
+  void drawImageMarker(
+      XyDataSeries<dynamic, dynamic> series,
+      SeriesRendererDetails seriesRendererDetails,
+      Canvas canvas,
+      int pointIndex,
+      double pointX,
+      double pointY) {
+    final ImageProvider? markerImage =
+        seriesRendererDetails.markerSettingsRenderer!.image != null
+            ? image
+            : series.markerImageValueMapper != null
+                ? series.markerImageValueMapper!(series.dataSource[pointIndex])
+                : null;
+
+    if (markerImage != null) {
       final double imageWidth =
           2 * seriesRendererDetails.series.markerSettings.width;
       final double imageHeight =
@@ -591,7 +610,10 @@ class MarkerSettingsRenderer {
       final Rect positionRect = Rect.fromLTWH(pointX - imageWidth / 2,
           pointY - imageHeight / 2, imageWidth, imageHeight);
       paintImage(
-          canvas: canvas, rect: positionRect, image: image!, fit: BoxFit.fill);
+          canvas: canvas,
+          rect: positionRect,
+          image: markerImage,
+          fit: BoxFit.fill);
     }
   }
 }

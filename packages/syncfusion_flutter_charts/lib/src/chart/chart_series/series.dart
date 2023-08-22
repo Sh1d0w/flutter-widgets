@@ -43,6 +43,7 @@ abstract class CartesianSeries<T, D> extends ChartSeries<T, D> {
       this.yAxisName,
       this.sizeValueMapper,
       this.pointColorMapper,
+      this.markerImageValueMapper,
       this.color,
       this.legendItemText,
       this.sortFieldValueMapper,
@@ -100,6 +101,7 @@ abstract class CartesianSeries<T, D> extends ChartSeries<T, D> {
             yValueMapper: yValueMapper,
             sortFieldValueMapper: sortFieldValueMapper,
             pointColorMapper: pointColorMapper,
+            markerImageValueMapper: markerImageValueMapper,
             dataLabelMapper: dataLabelMapper,
             dataSource: dataSource,
             emptyPointSettings: emptyPointSettings,
@@ -405,6 +407,38 @@ abstract class CartesianSeries<T, D> extends ChartSeries<T, D> {
   /// ```
   @override
   final ChartIndexedValueMapper<Color>? pointColorMapper;
+
+  /// Field in the data source, which is considered as image provider for markers.
+  ///
+  /// Defaults to `null`.
+  ///
+  /// ```dart
+  /// Widget build(BuildContext context) {
+  ///   return SfCartesianChart(
+  ///     series: <ColumnSeries<ColumnImages, num>>[
+  ///       ColumnSeries<ColumnImages, num>(
+  ///         dataSource: chartData,
+  ///         xValueMapper: (ColumnColors sales, _) => sales.x,
+  ///         yValueMapper: (ColumnColors sales, _) => sales.y,
+  ///         markerImageValueMapper: (ColumnColors sales, _) => sales.markerImageValueMapper,
+  ///       ),
+  ///     ],
+  ///   );
+  /// }
+  /// final List<ColumnImages> chartData = <ColumnColors>[
+  ///   ColumnColors(1991, 7.8, const AssetImage('images/livechart1.png')),
+  ///   ColumnColors(1992, 6.5, const AssetImage('images/livechart2.png')),
+  ///   ColumnColors(1993, 6.0, const AssetImage('images/livechart3.png')),
+  /// ];
+  /// class ColumnImages {
+  ///   ColumnImages(this.x, this.y,this.markerImageValueMapper);
+  ///     final num x;
+  ///     final num y;
+  ///     final Color markerImageValueMapper;
+  /// }
+  /// ```
+  @override
+  final ChartIndexedValueMapper<ImageProvider>? markerImageValueMapper;
 
   /// Field in the data source, which is considered as text for the data points.
   ///

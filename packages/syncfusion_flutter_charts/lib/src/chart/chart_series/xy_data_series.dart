@@ -41,6 +41,7 @@ abstract class XyDataSeries<T, D> extends CartesianSeries<T, D> {
       ChartValueMapper<T, num>? lowValueMapper,
       ChartValueMapper<T, bool>? intermediateSumPredicate,
       ChartValueMapper<T, bool>? totalSumPredicate,
+      ChartValueMapper<T, ImageProvider>? markerImageValueMapper,
       List<Trendline>? trendlines,
       double? width,
       MarkerSettings? markerSettings,
@@ -90,6 +91,10 @@ abstract class XyDataSeries<T, D> extends CartesianSeries<T, D> {
                 : null,
             pointColorMapper: pointColorMapper != null
                 ? (int index) => pointColorMapper(dataSource[index], index)
+                : null,
+            markerImageValueMapper: markerImageValueMapper != null
+                ? (int index) =>
+                    markerImageValueMapper(dataSource[index], index)
                 : null,
             dataLabelMapper: dataLabelMapper != null
                 ? (int index) => dataLabelMapper(dataSource[index], index)
