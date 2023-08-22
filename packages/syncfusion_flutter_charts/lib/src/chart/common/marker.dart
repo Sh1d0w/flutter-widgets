@@ -450,7 +450,7 @@ class MarkerSettingsRenderer {
             series,
             seriesRendererDetails,
             canvas,
-            point.overallDataPointIndex,
+            point.overallDataPointIndex!,
             isBoxSeries
                 ? point.outliersPoint[outlierIndex!].x
                 : point.markerPoint!.x,
@@ -463,7 +463,7 @@ class MarkerSettingsRenderer {
               series,
               seriesRendererDetails,
               canvas,
-              point.overallDataPointIndex,
+              point.overallDataPointIndex!,
               point.markerPoint2!.x,
               point.markerPoint2!.y);
         }
